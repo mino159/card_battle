@@ -1,16 +1,16 @@
-html, body {
+html,
+body {
     height: 100%;
-	width: 98%;
+    width: 98%;
 }
 
 html {
     display: table;
     margin: auto;
-
 }
 
 body {
-	display: table-cell;
+    display: table-cell;
     vertical-align: middle;
     max-width: 60vh;
     font-family: Arial, sans-serif;
@@ -18,21 +18,21 @@ body {
     justify-content: center;
     align-items: center;
     height: 90vh;
-    margin: auto;
+    /*margin: auto;*/
     background-color: #202020;
     flex-direction: column;
-	font-size: min(6vw,2vh);
+    font-size: min(6vw, 2vh);
 }
 
 #game-board {
-	width: 100%;
+    width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(5,19.2%);
+    grid-template-columns: repeat(5, 19.2%);
     grid-template-rows: repeat(5, 19.2%);
     gap: 1%;
     /* margin-bottom: 2%; */
-	padding: 1%;
+    padding: 1%;
 }
 
 .card {
@@ -46,26 +46,28 @@ body {
     border: 2px solid black;
     cursor: pointer;
     position: relative;
-	transition: transform 1s ease, opacity 0.5s ease; /* Animation for smooth movement and fade */
+    transition:
+        transform 1s ease,
+        opacity 0.5s ease; /* Animation for smooth movement and fade */
 }
 
 .card.shift-left-down {
-	transform: translate(-105%, 105%); /* Move left and down */
+    transform: translate(-105%, 105%); /* Move left and down */
 }
 .card.shift-right-down {
-	transform: translate(105%, 105%); /* Move right and down */
+    transform: translate(105%, 105%); /* Move right and down */
 }
 .card.shift-down {
-	transform: translateY(105%); /* Move only down */
+    transform: translateY(105%); /* Move only down */
 }
 
-.transparent{
-	opacity:0;
-	/* transition: opacity 0.5s ease; */
+.transparent {
+    opacity: 0;
+    /* transition: opacity 0.5s ease; */
 }
 
-.visible{
-	opacity:100;
+.visible {
+    opacity: 100;
 }
 
 .card.unselectable {
@@ -80,12 +82,12 @@ body {
     /* font-size: 22px; */
     font-weight: bold;
     color: black;
-	overflow-wrap: anywhere;
+    overflow-wrap: anywhere;
 }
 
 #player-container {
-	width: 100%;
-	height: 19.2%;
+    width: 100%;
+    height: 19.2%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,13 +103,15 @@ body {
     align-items: center;
     font-size: 170%;
     border: 2px solid black;
-	cursor: pointer;
+    cursor: pointer;
     position: relative;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    transition:
+        transform 0.5s ease,
+        opacity 0.5s ease;
 }
 
 #info {
-	padding-bottom: 1%;
+    padding-bottom: 1%;
     /* font-size: large; */
     font-weight: bold;
     color: white;
@@ -119,9 +123,9 @@ body {
     /* margin-top: 10px; */
     position: absolute;
     transform: translateX(200%);
-	font-weight: bold;
+    font-weight: bold;
 }
 
-p{
-	margin:0;
+p {
+    margin: 0;
 }
