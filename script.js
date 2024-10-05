@@ -159,25 +159,30 @@ function generateCard() {
     card.type = "sword";
     card.content = "🗡";
     card.number = randomIntBetween(rangeSwordCardMin(), rangeSwordCardMax());
+    card.numIcon = "-💰";
   } else if (random < finalChanceShieldCard) {
     card.type = "shield";
     card.content = "🛡";
     card.number = randomIntBetween(rangeShieldCardMin(), rangeShieldCardMax()); // Shield amount
+    card.numIcon = "+🛡";
   } else if (random < finalChanceHealCard) {
     card.type = "heal";
     card.content = "❤️";
     card.number = randomIntBetween(rangeHealCardMin(), rangeHealCardMax()); // Heal amount
+    card.numIcon = "+❤️";
   } else if (random < finalChanceGoldCard) {
     card.type = "gold";
     card.content = "💰";
     card.number = randomIntBetween(rangeGoldCardMin(), rangeGoldCardMax());
+    card.numIcon = "+💰";
   } else {
     card.type = "enemy";
     card.content = "👹";
     card.attack = randomIntBetween(rangeEnemyCardMin(), rangeEnemyCardMax()); // actual Enemy strength
     showMin = randomIntBetween(rangeEnemyCardMin(), card.attack);
     showMax = randomIntBetween(card.attack, rangeEnemyCardMax());
-    card.number = `${showMin}-${showMax}`;
+    card.number = `${showMin}/${showMax}`;
+    card.numIcon = "-❤️";
   }
   return card;
 }
@@ -201,14 +206,24 @@ function updateBoard() {
   gameBoardElement.innerHTML = "";
   currentBoardData.forEach((cardObj) => {
     const card = document.createElement("div");
-    card.classList.add("card");
+    card.classList.add("card", cardObj.type);
     card.textContent = cardObj.content;
+
+    const name = document.createElement("span");
+    name.classList.add("name");
+    name.textContent = cardObj.type;
+    card.appendChild(name);
 
     // Add a number to the corner for enemy strength, heal amount, or gold
     const number = document.createElement("div");
     number.classList.add("number");
     number.textContent = cardObj.number;
     card.appendChild(number);
+
+    const icon = document.createElement("span");
+    icon.classList.add("icon");
+    icon.textContent = cardObj.numIcon;
+    number.appendChild(icon);
 
     gameBoardElement.appendChild(card);
   });

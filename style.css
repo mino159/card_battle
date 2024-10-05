@@ -1,121 +1,141 @@
 body {
-    display: table-cell;
-    vertical-align: middle;
-    max-width: 60vh;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    margin: auto;
-    background-color: #202020;
-    flex-direction: column;
-    font-size: min(6vw, 2vh);
+  display: table-cell;
+  vertical-align: middle;
+  max-width: 60vh;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  margin: auto;
+  background-color: #202020;
+  flex-direction: column;
+  font-size: min(6vw, 2vh);
 }
 
 #game-board {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 19.2%);
-    grid-template-rows: repeat(5, 19.2%);
-    gap: 1%;
-    /* margin-bottom: 2%; */
-    padding: 1%;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 19.2%);
+  grid-template-rows: repeat(5, 19.2%);
+  gap: 1%;
+  /* margin-bottom: 2%; */
+  padding: 1%;
 }
 
 .card {
-    /* width: 100px; */
-    /* height: 150px; */
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 170%;
-    border: 2px solid black;
-    cursor: pointer;
-    position: relative;
-    transition:
-        transform 1s ease,
-        opacity 0.5s ease; /* Animation for smooth movement and fade */
+  /* width: 100px; */
+  /* height: 150px; */
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 170%;
+  border: 2px solid black;
+  cursor: pointer;
+  position: relative;
+  transition: transform 1s ease, opacity 0.5s ease;
+  flex-direction: column;
 }
 
 .card.shift-left-down {
-    transform: translate(-105%, 105%); /* Move left and down */
+  transform: translate(-105%, 105%); /* Move left and down */
 }
 .card.shift-right-down {
-    transform: translate(105%, 105%); /* Move right and down */
+  transform: translate(105%, 105%); /* Move right and down */
 }
 .card.shift-down {
-    transform: translateY(105%); /* Move only down */
+  transform: translateY(105%); /* Move only down */
 }
 
 .transparent {
-    opacity: 0;
-    /* transition: opacity 0.5s ease; */
+  opacity: 0;
+  /* transition: opacity 0.5s ease; */
 }
 
 .visible {
-    opacity: 100;
+  opacity: 100;
+}
+/* 
+.card.sword {
+  background: lightgreen;
+} */
+
+.card.enemy {
+  color: darkred;
 }
 
-.card.unselectable {
-    background-color: lightgray;
-    pointer-events: none;
+.card .name {
+  font-size: 30%;
+  font-weight: bold;
+  margin: 10%;
+}
+
+.unselectable {
+  background-color: lightgray;
+  pointer-events: none;
 }
 
 .number {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    /* font-size: 22px; */
-    font-weight: bold;
-    color: black;
-    overflow-wrap: anywhere;
+  display: flex;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  /* font-size: 22px; */
+  font-weight: bold;
+  /* color: black; */
+  overflow-wrap: anywhere;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.icon {
+  font-size: 40%;
 }
 
 #player-container {
-    width: 100%;
-    height: 19.2%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* margin-top: 20px; */
+  width: 100%;
+  height: 19.2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 20px; */
 }
 
 #player-card {
-    width: 19.2%;
-    height: 100%;
-    background-color: white;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    /* font-size: 170%; */
-    border: 2px solid black;
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.5s ease,
-        opacity 0.5s ease;
-    flex-direction: column;
-    align-content: center;
+  font-size: 125%;
+  font-weight: bold;
+  width: 25%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px solid black;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  flex-direction: column;
+  align-content: center;
 }
 
 #info {
-    padding-bottom: 1%;
-    /* font-size: large; */
-    font-weight: bold;
-    color: white;
-    /* margin-top: 0px; */
+  padding-bottom: 1%;
+  /* font-size: large; */
+  font-weight: bold;
+  color: white;
+  /* margin-top: 0px; */
 }
 
 #stats {
-    color: white;
-    /* margin-top: 10px; */
-    position: absolute;
-    transform: translateX(200%);
-    font-weight: bold;
+  color: white;
+  /* margin-top: 10px; */
+  position: absolute;
+  transform: translateX(250%);
+  font-weight: bold;
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }
