@@ -1,8 +1,9 @@
 var seed = 66;
 
 function randomVal() {
-    var x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
+    return Math.random()
+    // var x = Math.sin(seed++) * 10000;
+    // return x - Math.floor(x);
 }
 
 const gameBoardElement = document.getElementById('game-board');
