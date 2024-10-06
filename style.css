@@ -94,7 +94,7 @@ body {
 }
 
 .unselectable {
-    background-color: lightgray;
+    background-color: gray;
     pointer-events: none;
     border: 2px solid black;
 }
