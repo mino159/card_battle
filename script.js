@@ -335,8 +335,17 @@ function updateCardsCount() {
 
 function combat(actualEnemyStrength, index) {
     var damage = actualEnemyStrength;
-    damage = Math.max(damage - playerShield, 0);
-    playerShield = Math.max(playerShield - actualEnemyStrength, 0);
+    damage = Math.max(damage - playerAttack, 0);
+
+    if (damage - playerShield <= 0) {
+        //shield is more
+        playerShield -= damage;
+        damage = 0;
+    } else {
+        //enemy has more
+        playerShield = 0;
+        damage -= playerShield;
+    }
     playerHP = Math.max(playerHP - damage, 0);
 
     //console.log(`You attacked! You took ${damage} damage!`);
