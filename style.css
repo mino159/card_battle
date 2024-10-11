@@ -59,7 +59,9 @@ body {
         opacity 0.5s ease;
     flex-direction: column;
 }
-
+#game-board .card.permanent{
+  background-color: lightgreen;
+}
 .card.shift-left-down {
     transform: translate(-105%, 105%); /* Move left and down */
 }

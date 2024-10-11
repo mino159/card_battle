@@ -1,4 +1,5 @@
 var seed = 66;
+GAMEOVER = false;
 
 function randomVal() {
     return Math.random();
@@ -20,12 +21,19 @@ const shieldLabel = document.getElementById("shield");
 const cardLabel = document.getElementById("card");
 const cardsElements = document.getElementsByClassName;
 
-let playerHP = 15; // Player base health
-let playerMaxHP = 15;
-let playerAttack = 0; // Player base attack strength
-let playerShield = 0; // Player shield
-let playerGold = 0; // Player money
-let playerCards = 0;
+let initPlayerHP = 15; // Player base health
+let initPlayerMaxHP = 15;
+let initPlayerAttack = 0; // Player base attack strength
+let initPlayerShield = 0; // Player shield
+let initPlayerGold = 0; // Player money
+let initPlayerCards = 0;
+
+let playerHP = initPlayerHP; // Player base health
+let playerMaxHP = initPlayerMaxHP;
+let playerAttack = initPlayerAttack; // Player base attack strength
+let playerShield = initPlayerShield; // Player shield
+let playerGold = initPlayerGold; // Player money
+let playerCards = initPlayerCards;
 
 let currentBoardData = [];
 
@@ -37,6 +45,7 @@ let chanceShieldCard = 0.08; // % chance to generate a shield card
 let chanceHealCard = 0.14; // % chance to generate a heal card
 let chanceGoldCard = 0.18; // % chance to generate a gold card
 let chanceEnemyCard = 0.57; // % chance to generate an enemy card
+let chancePermanentCard = 0.01;
 
 cardsChances = [
     chanceSwordCard,
@@ -45,13 +54,13 @@ cardsChances = [
     chanceGoldCard,
     chanceEnemyCard
 ];
-console.log(
-    chanceSwordCard +
-        chanceShieldCard +
-        chanceHealCard +
-        chanceGoldCard +
-        chanceEnemyCard
-);
+// console.log(
+//     chanceSwordCard +
+//         chanceShieldCard +
+//         chanceHealCard +
+//         chanceGoldCard +
+//         chanceEnemyCard
+// );
 chanceSwordCard = chanceSwordCard;
 chanceShieldCard = chanceShieldCard + chanceSwordCard;
 chanceHealCard = chanceHealCard + chanceShieldCard;
@@ -70,14 +79,17 @@ finalChanceHealCard = function () {
 finalChanceGoldCard = function () {
     return chanceGoldCard - playerGold / 300;
 };
+function getChancePermanentCard() {
+    return chancePermanentCard + playerCards / 500;
+}
 // finalChanceEnemyCard netreba lebo je to vsetko zvysne
 
 //Card numbers Min Max based on playerMaxHP
 let SwordCardMin = 8;
 let SwordCardMax = 15;
 
-let ShieldCardMin = 1;
-let ShieldCardMax = 3;
+let ShieldCardMin = 3;
+let ShieldCardMax = 10;
 
 let HealCardMin = 1;
 let HealCardMax = 5;
@@ -96,24 +108,24 @@ rangeSwordCardMax = function () {
 };
 
 rangeShieldCardMin = function () {
-    return (ShieldCardMin * playerMaxHP) / 10;
+    return (ShieldCardMin * playerMaxHP) / 15;
 };
 rangeShieldCardMax = function () {
-    return (ShieldCardMax * playerMaxHP) / 10;
+    return (ShieldCardMax * playerMaxHP) / 15;
 };
 
 rangeHealCardMin = function () {
-    return (HealCardMin * playerMaxHP) / 10;
+    return (HealCardMin * playerMaxHP) / 15;
 };
 rangeHealCardMax = function () {
-    return (HealCardMax * playerMaxHP) / 10;
+    return (HealCardMax * playerMaxHP) / 15;
 };
 
 rangeGoldCardMin = function () {
-    return (GoldCardMin * playerMaxHP) / 10;
+    return (GoldCardMin * playerMaxHP) / 15;
 };
 rangeGoldCardMax = function () {
-    return (GoldCardMax * playerMaxHP) / 10;
+    return (GoldCardMax * playerMaxHP) / 15;
 };
 
 rangeEnemyCardMin = function () {
@@ -164,9 +176,11 @@ function generateCard(row) {
     // card.content = ++created
     // card.number =  0
     // return card;
+
     if (playerCards > 0 && playerCards % 10 === 0 && row === "row") {
         random = 1;
     }
+    isPermanent = randomVal() < getChancePermanentCard();
 
     if (random < finalChanceSwordCard()) {
         card.type = "sword";
@@ -176,6 +190,10 @@ function generateCard(row) {
             rangeSwordCardMax()
         );
         card.numIcon = "-💰";
+        card.permanent = isPermanent;
+        if (isPermanent) {
+            card.number * 2;
+        }
     } else if (random < finalChanceShieldCard()) {
         card.type = "shield";
         card.content = "🛡";
@@ -183,12 +201,24 @@ function generateCard(row) {
             rangeShieldCardMin(),
             rangeShieldCardMax()
         ); // Shield amount
-        card.numIcon = "+🛡";
+        card.numIcon = "-💰";
+        card.permanent = isPermanent;
+        if (isPermanent) {
+            card.number * 2;
+        }
     } else if (random < finalChanceHealCard()) {
         card.type = "heal";
         card.content = "❤️";
         card.number = randomIntBetween(rangeHealCardMin(), rangeHealCardMax()); // Heal amount
         card.numIcon = "+❤️";
+        card.permanent = isPermanent;
+        if (isPermanent) {
+            card.number = randomIntBetween(
+                rangeSwordCardMin(),
+                rangeSwordCardMax()
+            );
+            card.numIcon = "-💰";
+        }
     } else if (random < finalChanceGoldCard()) {
         card.type = "gold";
         card.content = "💰";
@@ -230,6 +260,9 @@ function updateBoard() {
         const card = document.createElement("div");
         card.classList.add("card", cardObj.type);
         card.textContent = cardObj.content;
+        if (cardObj.permanent) {
+            card.classList.add("permanent");
+        }
 
         const name = document.createElement("span");
         name.classList.add("name");
@@ -239,6 +272,7 @@ function updateBoard() {
         // Add a number to the corner for enemy strength, heal amount, or gold
         const number = document.createElement("div");
         number.classList.add("number");
+
         number.textContent = cardObj.number;
         card.appendChild(number);
 
@@ -271,6 +305,7 @@ function handleCardClick(card, index) {
     updateCardsCount();
     const cardType = currentBoardData[index].type;
     const cardNumber = currentBoardData[index].number;
+    const isPermanent = currentBoardData[index].permanent;
 
     if (cardType === "sword") {
         if (playerGold < cardNumber) {
@@ -287,16 +322,32 @@ function handleCardClick(card, index) {
             playerGold -= cardNumber;
             //console.log(`Attack Up: ${playerAttack}`);
         }
+        if (isPermanent) {
+            initPlayerAttack++;
+        }
         updatePlayerStats();
     } else if (cardType === "shield") {
-        playerShield += cardNumber;
+        if (playerGold < cardNumber) {
+            infoElement.textContent = `You don't have enough money for that shield!`;
+        } else {
+            playerGold -= cardNumber;
+            playerShield++;
+            infoElement.textContent = `You have shield that can take +1 dammage!`;
+            if (isPermanent) {
+                initPlayerShield++;
+            }
+        }
+
         //console.log(`Shielding for ${cardNumber} HP`);
-        infoElement.textContent = `You have shield that can take ${cardNumber} dammage!`;
+
         updatePlayerStats();
     } else if (cardType === "heal") {
         //console.log(`Healing for ${cardNumber} HP`);
         infoElement.textContent = `You healed for ${cardNumber} HP!`;
         playerHP = Math.min(playerHP + cardNumber, playerMaxHP);
+        if (isPermanent) {
+            initPlayerMaxHP++;
+        }
         updatePlayerStats();
     } else if (cardType === "gold") {
         //console.log(`Collected ${cardNumber} gold`);
@@ -308,6 +359,9 @@ function handleCardClick(card, index) {
         //console.log(`Enemy encountered: Strength ${actualEnemyStrength}`);
         infoElement.textContent = `You encountered an enemy with strength ${actualEnemyStrength}!`;
         combat(actualEnemyStrength, index);
+        if (GAMEOVER) {
+            return;
+        }
     }
     timeToWait = 1000;
     if (index === 21) {
@@ -410,11 +464,30 @@ function updatePlayerStats() {
     moneyLabel.textContent = playerGold;
     shieldLabel.textContent = playerShield;
     attackLabel.textContent = playerAttack;
+    cardLabel.textContent = playerCards;
 }
 
 function gameOver() {
-    gameBoardElement.innerHTML = "";
-    infoElement.textContent = "Game Over! Refresh to play again.";
+    //gameBoardElement.innerHTML = "";
+    GAMEOVER = true;
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        card.classList.add("unselectable");
+    });
+
+    infoElement.textContent = "Game Over! Buy new gear and play again.";
+}
+function restartGame() {
+    //initPlayerMaxHP++;
+    GAMEOVER = false;
+    playerMaxHP = initPlayerMaxHP;
+    playerHP = playerMaxHP;
+    playerGold = initPlayerGold;
+    playerAttack = initPlayerAttack;
+    playerShield = initPlayerShield;
+    playerCards = initPlayerCards;
+    updatePlayerStats();
+    generateBoard();
 }
 
 // Shift rows after moving player (5x5 grid logic)
