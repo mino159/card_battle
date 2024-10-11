@@ -7,10 +7,16 @@ function randomVal() {
     // return x - Math.floor(x);
 }
 
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
+function popupVisible(bool) {
+    if (bool) {
+        visible = "flex";
+    } else {
+        visible = "none";
+    }
+    popupElement.style.display = visible
 }
 
+const popupElement = document.getElementById("popup");
 const gameBoardElement = document.getElementById("game-board");
 const infoElement = document.getElementById("info");
 const playerCardElement = document.getElementById("player-card");
@@ -476,6 +482,8 @@ function gameOver() {
     });
 
     infoElement.textContent = "Game Over! Buy new gear and play again.";
+    //popupElement.innerHTML = "";
+    popupVisible(true);
 }
 function restartGame() {
     //initPlayerMaxHP++;
