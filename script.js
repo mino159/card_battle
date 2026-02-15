@@ -198,7 +198,7 @@ function generateCard(row) {
         card.numIcon = "-💰";
         card.permanent = isPermanent;
         if (isPermanent) {
-            card.number * 2;
+            card.number *= 2;
         }
     } else if (random < finalChanceShieldCard()) {
         card.type = "shield";
@@ -210,7 +210,7 @@ function generateCard(row) {
         card.numIcon = "-💰";
         card.permanent = isPermanent;
         if (isPermanent) {
-            card.number * 2;
+            card.number *= 2;
         }
     } else if (random < finalChanceHealCard()) {
         card.type = "heal";
@@ -220,10 +220,10 @@ function generateCard(row) {
         card.permanent = isPermanent;
         if (isPermanent) {
             card.number = randomIntBetween(
-                rangeSwordCardMin(),
-                rangeSwordCardMax()
+              rangeHealCardMin(),
+              rangeHealCardMax()
             );
-            card.numIcon = "-💰";
+          card.numIcon = "+❤️";
         }
     } else if (random < finalChanceGoldCard()) {
         card.type = "gold";
@@ -403,8 +403,8 @@ function combat(actualEnemyStrength, index) {
         damage = 0;
     } else {
         //enemy has more
-        playerShield = 0;
         damage -= playerShield;
+        playerShield = 0;
     }
     playerHP = Math.max(playerHP - damage, 0);
 
