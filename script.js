@@ -1,6 +1,7 @@
 var seed = 66;
 GAMEOVER = false;
 
+
 function randomVal() {
     return Math.random();
     // var x = Math.sin(seed++) * 10000;
