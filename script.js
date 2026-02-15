@@ -403,8 +403,8 @@ function combat(actualEnemyStrength, index) {
         damage = 0;
     } else {
         //enemy has more
-        playerShield = 0;
         damage -= playerShield;
+        playerShield = 0;
     }
     playerHP = Math.max(playerHP - damage, 0);
 
